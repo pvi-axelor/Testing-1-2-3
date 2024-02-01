@@ -4,6 +4,8 @@
 package learn.junit.main;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Tag;
 
 class AppTest {
@@ -102,4 +105,12 @@ class AppTest {
 			assumeTrue(a == 10);
 		});
 	}
+
+	@TestFactory
+	Stream<DynamicTest> testFactoryMethod() {
+		return Stream.of(DynamicTest.dynamicTest("Addition", () -> assertEquals(10, 5 + 5)),
+				DynamicTest.dynamicTest("Subtraction", () -> assertEquals(0, 5 - 5)),
+				DynamicTest.dynamicTest("Division", () -> assertEquals(1, 5 / 5)));
+	}
+	
 }
