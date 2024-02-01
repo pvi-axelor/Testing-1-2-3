@@ -4,8 +4,8 @@ import java.util.Comparator;
 
 public class Person implements Comparator<Person>, Comparable<Person> {
 	
-	private String name;
-	private int age;
+	public String name;
+	public int age;
 	
 	
 	@Override
@@ -16,7 +16,7 @@ public class Person implements Comparator<Person>, Comparable<Person> {
 	@Override
 	public int compareTo(Person o) {
 		
-		return 0;
+		return Integer.compare(age, o.age);
 	}
 
 }

@@ -5,43 +5,101 @@ package learn.junit.main;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
+
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 
 class AppTest {
-	
+
 	@BeforeAll
 	static void yeeHaww() {
 		System.err.println("YeeHaww! BeforeAll!\n");
 	}
-	
+
 	@AfterAll
 	static void soLong() {
 		System.err.println("\nSo long! AfterAll!");
 	}
-	
+
 	@AfterEach
 	void nayy() {
 		System.err.println("Nayyy!!, AfterEach!\n");
 	}
-	
+
 	@BeforeEach
 	void ayeee() {
 		System.err.println("\nAyeee!!, BeforeEach!");
 	}
-	
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
-    }
-    
-    @DisplayName("Test with spaces in it's name!")
-    @Test
-    public void testWithoutSpacesInItsName() {
-        System.out.println("This is a test with custom name!");
-    }
+
+	@Test
+	void appHasAGreeting() {
+		App classUnderTest = new App();
+		assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+	}
+
+	@DisplayName("Test with spaces in it's name!")
+	@Test
+	public void testWithoutSpacesInItsName() {
+		System.out.println("This is a test with custom name!");
+	}
+
+	@Test
+	void testingAssertEquals() {
+		assertEquals(10, 10);
+		System.out.println("10 equals to 10");
+	}
+
+	@Test
+	void testingAssertNotEquals() {
+		assertNotEquals(10, 20);
+		System.out.println("10 not equals to 20");
+	}
+
+	@Test
+	void testingAssertNotNull() {
+		assertNotNull(new Person(), "It should have some value!");
+	}
+
+	@Test
+	void groupAssertions() {
+		int[] numbers = { 0, 1, 2, 3, 4 };
+		assertAll("numbers", () -> assertEquals(numbers[0], 0), () -> assertEquals(numbers[3], 3),
+				() -> assertEquals(numbers[4], 4));
+	}
+
+	@Test
+	void lambdaExpression() {
+		assertFalse(Stream.of(1, 2, 3).mapToInt(Integer::intValue).sum() > 6,
+				() -> "Sum should be equal or less than 6");
+	}
+
+	@Test
+	void falseAssumption() {
+		assumeFalse(5 < 1);
+	}
+
+	@Tag("Hello")
+	@Test
+	void trueAssumption() {
+		assumeTrue(10 > 9);
+	}
+
+	@Disabled("Disabled for no reason!")
+	@Test
+	void assumingSomething() {
+		assumingThat(true, () -> {
+			int a = 10;
+			assumeTrue(a == 10);
+		});
+	}
 }
